@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Net;
+using System.Net.Sockets;
 
 namespace rumba
 {
@@ -32,7 +33,7 @@ namespace rumba
 
         public void HandleIncome(int port)
         {
-            UdpListener listener = new UdpListener();
+            UdpClient listener = new UdpClient(port);
         }
 
         #region EventHandlers
