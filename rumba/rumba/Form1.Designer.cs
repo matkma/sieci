@@ -128,6 +128,7 @@
             this.Controls.Add(this.button_start);
             this.Name = "Form1";
             this.Text = "Rumba";
+            this.Load += new System.EventHandler(this.Form1_Load_1);
             this.ResumeLayout(false);
 
         }
