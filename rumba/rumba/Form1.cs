@@ -30,6 +30,11 @@ namespace rumba
             }
         }
 
+        public void HandleIncome(int port)
+        {
+            UdpListener listener = new UdpListener();
+        }
+
         #region EventHandlers
 
         private void Form1_Load(object sender, EventArgs e)
@@ -42,7 +47,9 @@ namespace rumba
             if (button_start.Text == "Start")
             {
                 button_start.Text = "Stop";
+                int port = 8050;
 
+                Task.Factory.StartNew(() => HandleIncome(port));
 
             }
             else
