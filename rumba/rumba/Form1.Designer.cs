@@ -36,6 +36,7 @@
             this.listBox_files = new System.Windows.Forms.ListBox();
             this.button_download = new System.Windows.Forms.Button();
             this.button_refresh = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // button_start
@@ -61,6 +62,8 @@
             // 
             // listBox_users
             // 
+            this.listBox_users.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.listBox_users.FormattingEnabled = true;
             this.listBox_users.Location = new System.Drawing.Point(12, 133);
             this.listBox_users.Name = "listBox_users";
@@ -70,6 +73,9 @@
             // 
             // listBox_users_files
             // 
+            this.listBox_users_files.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.listBox_users_files.FormattingEnabled = true;
             this.listBox_users_files.Location = new System.Drawing.Point(122, 133);
             this.listBox_users_files.Name = "listBox_users_files";
@@ -89,6 +95,8 @@
             // 
             // listBox_files
             // 
+            this.listBox_files.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.listBox_files.FormattingEnabled = true;
             this.listBox_files.Location = new System.Drawing.Point(122, 12);
             this.listBox_files.Name = "listBox_files";
@@ -114,11 +122,21 @@
             this.button_refresh.TabIndex = 8;
             this.button_refresh.Text = "Odśwież";
             this.button_refresh.UseVisualStyleBackColor = true;
+            this.button_refresh.Click += new System.EventHandler(this.button_refresh_Click);
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(214, 106);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(100, 20);
+            this.textBox1.TabIndex = 9;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // Form1
             // 
             this.BackColor = System.Drawing.Color.Thistle;
             this.ClientSize = new System.Drawing.Size(482, 290);
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.button_refresh);
             this.Controls.Add(this.button_download);
             this.Controls.Add(this.listBox_files);
@@ -131,6 +149,7 @@
             this.Text = "Rumba";
             this.Load += new System.EventHandler(this.Form1_Load_1);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -144,6 +163,7 @@
         private System.Windows.Forms.ListBox listBox_files;
         private System.Windows.Forms.Button button_download;
         private System.Windows.Forms.Button button_refresh;
+        private System.Windows.Forms.TextBox textBox1;
 
     }
 }

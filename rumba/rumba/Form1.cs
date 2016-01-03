@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using System.Net.NetworkInformation;
 
 namespace rumba
 {
@@ -17,6 +18,7 @@ namespace rumba
     {
         private static string path = null;
         private static string localIp = null;
+        private static int port = 8050;
 
         public Form1()
         {
@@ -29,11 +31,51 @@ namespace rumba
                     localIp = ip.ToString();
                 }
             }
+
+            textBox1.Text = localIp;
         }
 
         public void HandleIncome(int port)
         {
+            bool done = false;
+
             UdpClient listener = new UdpClient(port);
+            IPEndPoint groupEP = new IPEndPoint(IPAddress.Any, port);
+
+            try
+            {
+                while (!done)
+                {
+                    byte[] bytes = listener.Receive(ref groupEP);
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+            finally
+            {
+                listener.Close();
+            }
+        }
+
+        public void RefreshHosts(string subnet, out List<string> hosts)
+        {
+            hosts = new List<string>();
+
+            for (int i = 0; i <= 255; i++)
+            {
+                string host = subnet + i;
+
+                Ping ping = new Ping();
+                PingReply reply = ping.Send(IPAddress.Parse(host), 100);
+                if (reply.Status == IPStatus.Success)
+                {
+                    hosts.Add(host);
+                }
+
+            }
         }
 
         #region EventHandlers
@@ -48,7 +90,6 @@ namespace rumba
             if (button_start.Text == "Start")
             {
                 button_start.Text = "Stop";
-                int port = 8050;
 
                 Task.Factory.StartNew(() => HandleIncome(port));
 
@@ -103,6 +144,20 @@ namespace rumba
         private void Form1_Load_1(object sender, EventArgs e)
         {
 
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button_refresh_Click(object sender, EventArgs e)
+        {
+            string subnet = localIp.Remove(10);
+
+         //   Task task = Task.Factory.StartNew(() => RefreshHosts(subnet, out hosts));
+
+           
         }
 
         #endregion
