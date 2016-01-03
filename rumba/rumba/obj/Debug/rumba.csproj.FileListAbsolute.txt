@@ -8,3 +8,11 @@ C:\Users\Pusiol\Documents\GitHub\sieci\rumba\rumba\obj\Debug\rumba.Properties.Re
 C:\Users\Pusiol\Documents\GitHub\sieci\rumba\rumba\obj\Debug\rumba.csproj.GenerateResource.Cache
 C:\Users\Pusiol\Documents\GitHub\sieci\rumba\rumba\obj\Debug\rumba.exe
 C:\Users\Pusiol\Documents\GitHub\sieci\rumba\rumba\obj\Debug\rumba.pdb
+D:\Projektz\C#\sieci\rumba\rumba\obj\Debug\rumba.exe
+D:\Projektz\C#\sieci\rumba\rumba\obj\Debug\rumba.pdb
+D:\Projektz\C#\sieci\rumba\rumba\bin\Debug\rumba.exe
+D:\Projektz\C#\sieci\rumba\rumba\bin\Debug\rumba.pdb
+D:\Projektz\C#\sieci\rumba\rumba\obj\Debug\rumba.csprojResolveAssemblyReference.cache
+D:\Projektz\C#\sieci\rumba\rumba\obj\Debug\rumba.Form1.resources
+D:\Projektz\C#\sieci\rumba\rumba\obj\Debug\rumba.Properties.Resources.resources
+D:\Projektz\C#\sieci\rumba\rumba\obj\Debug\rumba.csproj.GenerateResource.Cache
