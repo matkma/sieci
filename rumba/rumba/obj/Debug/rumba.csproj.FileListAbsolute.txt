@@ -1,1 +1,10 @@
 D:\Projektz\C#\sieci\rumba\rumba\bin\Debug\rumba.exe.config
+C:\Users\Pusiol\Documents\GitHub\sieci\rumba\rumba\bin\Debug\rumba.exe.config
+C:\Users\Pusiol\Documents\GitHub\sieci\rumba\rumba\bin\Debug\rumba.exe
+C:\Users\Pusiol\Documents\GitHub\sieci\rumba\rumba\bin\Debug\rumba.pdb
+C:\Users\Pusiol\Documents\GitHub\sieci\rumba\rumba\obj\Debug\rumba.csprojResolveAssemblyReference.cache
+C:\Users\Pusiol\Documents\GitHub\sieci\rumba\rumba\obj\Debug\rumba.Form1.resources
+C:\Users\Pusiol\Documents\GitHub\sieci\rumba\rumba\obj\Debug\rumba.Properties.Resources.resources
+C:\Users\Pusiol\Documents\GitHub\sieci\rumba\rumba\obj\Debug\rumba.csproj.GenerateResource.Cache
+C:\Users\Pusiol\Documents\GitHub\sieci\rumba\rumba\obj\Debug\rumba.exe
+C:\Users\Pusiol\Documents\GitHub\sieci\rumba\rumba\obj\Debug\rumba.pdb
