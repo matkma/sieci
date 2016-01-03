@@ -29,6 +29,8 @@ namespace rumba
                     localIp = ip.ToString();
                 }
             }
+
+            textBox1.Text = localIp;
         }
 
         public void HandleIncome(int port)
@@ -106,5 +108,10 @@ namespace rumba
         }
 
         #endregion
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
