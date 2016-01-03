@@ -117,6 +117,7 @@
             // 
             // Form1
             // 
+            this.BackColor = System.Drawing.Color.Pink;
             this.ClientSize = new System.Drawing.Size(482, 290);
             this.Controls.Add(this.button_refresh);
             this.Controls.Add(this.button_download);
