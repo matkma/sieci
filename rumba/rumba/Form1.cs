@@ -47,8 +47,8 @@ namespace rumba
                 while (!done)
                 {
                     byte[] bytes = listener.Receive(ref groupEP);
+                    Console.WriteLine("Connected to the client {0}, {1}", groupEP, Encoding.ASCII.GetString(bytes));
                 }
-
             }
             catch (Exception e)
             {
@@ -96,12 +96,10 @@ namespace rumba
 
         public void SendContent(string ip, string message)
         {
-            /*
-            UdpClient udp = new UdpClient(port);
+            UdpClient udp = new UdpClient();
             IPEndPoint groupEP = new IPEndPoint(IPAddress.Parse(ip), port);
             byte[] sendBytes = Encoding.ASCII.GetBytes(message);
             udp.Send(sendBytes, sendBytes.Length, groupEP);
-            */
         }
 
         #region EventHandlers
@@ -144,12 +142,13 @@ namespace rumba
 
         private void button_connect_Click(object sender, EventArgs e)
         {
-            Console.WriteLine(listBox_users.SelectedItem.ToString());
+            //Console.WriteLine(listBox_users.SelectedItem.ToString());
+            SendContent(localIp, "kochu");
         }
 
         private void button_download_Click(object sender, EventArgs e)
         {
-
+            
         }
 
         private void listBox_users_SelectedIndexChanged(object sender, EventArgs e)
