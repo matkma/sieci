@@ -25,3 +25,12 @@ D:\Projekty\sieci\rumba\rumba\obj\Debug\rumba.csprojResolveAssemblyReference.cac
 D:\Projekty\sieci\rumba\rumba\obj\Debug\rumba.Form1.resources
 D:\Projekty\sieci\rumba\rumba\obj\Debug\rumba.Properties.Resources.resources
 D:\Projekty\sieci\rumba\rumba\obj\Debug\rumba.csproj.GenerateResource.Cache
+C:\Users\mateusz.kmak\Desktop\sieci\sieci\rumba\rumba\bin\Debug\rumba.exe.config
+C:\Users\mateusz.kmak\Desktop\sieci\sieci\rumba\rumba\obj\Debug\rumba.exe
+C:\Users\mateusz.kmak\Desktop\sieci\sieci\rumba\rumba\obj\Debug\rumba.pdb
+C:\Users\mateusz.kmak\Desktop\sieci\sieci\rumba\rumba\bin\Debug\rumba.exe
+C:\Users\mateusz.kmak\Desktop\sieci\sieci\rumba\rumba\bin\Debug\rumba.pdb
+C:\Users\mateusz.kmak\Desktop\sieci\sieci\rumba\rumba\obj\Debug\rumba.csprojResolveAssemblyReference.cache
+C:\Users\mateusz.kmak\Desktop\sieci\sieci\rumba\rumba\obj\Debug\rumba.Form1.resources
+C:\Users\mateusz.kmak\Desktop\sieci\sieci\rumba\rumba\obj\Debug\rumba.Properties.Resources.resources
+C:\Users\mateusz.kmak\Desktop\sieci\sieci\rumba\rumba\obj\Debug\rumba.csproj.GenerateResource.Cache

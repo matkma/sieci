@@ -20,6 +20,8 @@ namespace rumba
         private static string localIp = null;
         private static int port = 8050;
 
+        private static string msg_check = "check";
+
         public Form1()
         {
             InitializeComponent();
@@ -60,23 +62,39 @@ namespace rumba
             }
         }
 
-        public List<string> RefreshHosts(string subnet, ref ListBox listbox)
+        public void RefreshHosts(string subnet, ref ListBox listbox)
         {
             List<string> hosts = new List<string>();
 
             for (int i = 0; i <= 10; i++)
             {
-                string host = subnet + i;
+                string host = subnet + "." + i;
                 Ping ping = new Ping();
                 PingReply reply = ping.Send(IPAddress.Parse(host), 200);
 
                 if (reply.Status == IPStatus.Success)
                 {
-                    hosts.Add(host);
+                    if (host == localIp)
+                    {
+                        this.Invoke((MethodInvoker)(() => listBox_users.Items.Add(host + " (ja)")));
+                    }
+                    else
+                    {
+                        this.Invoke((MethodInvoker)(() => listBox_users.Items.Add(host)));
+
+                    }
                 }
             }
+        }
 
-            return hosts;
+        public void SendContent(string ip, string message)
+        {
+            /*
+            UdpClient udp = new UdpClient(port);
+            IPEndPoint groupEP = new IPEndPoint(IPAddress.Parse(ip), port);
+            byte[] sendBytes = Encoding.ASCII.GetBytes(message);
+            udp.Send(sendBytes, sendBytes.Length, groupEP);
+            */
         }
 
         #region EventHandlers
@@ -154,21 +172,11 @@ namespace rumba
 
         private void button_refresh_Click(object sender, EventArgs e)
         {
-            string subnet = localIp.Remove(10);
-            var task = Task.Factory.StartNew<List<string>>(() => RefreshHosts(subnet, ref listBox_users))
-                .ContinueWith(tsk => RefreshHostsEnd(tsk));
+            listBox_users.Items.Clear();
+            string subnet = localIp.Remove(localIp.LastIndexOf('.'));
+            var task = Task.Factory.StartNew(() => RefreshHosts(subnet, ref listBox_users));
         }
 
         #endregion
-
-        private void RefreshHostsEnd(Task<List<string>> tsk)
-        {
-            Console.WriteLine("dupa");
-            foreach (string item in tsk.Result) 
-            {
-                Console.WriteLine(item);
-                listBox_users.Items.Add(item);
-            }
-        }
     }
 }
