@@ -33,8 +33,6 @@ namespace rumba
                     localIp = ip.ToString();
                 }
             }
-
-            textBox1.Text = localIp;
         }
 
         public void HandleIncome(int port)
@@ -74,14 +72,23 @@ namespace rumba
 
                 if (reply.Status == IPStatus.Success)
                 {
+                    string machineName = null;
                     if (host == localIp)
                     {
-                        this.Invoke((MethodInvoker)(() => listBox_users.Items.Add(host + " (ja)")));
+                        machineName = Dns.GetHostName();
+                        this.Invoke((MethodInvoker)(() => listBox_users.Items.Add(host + " (ja) " + machineName)));
                     }
                     else
                     {
-                        this.Invoke((MethodInvoker)(() => listBox_users.Items.Add(host)));
-
+                        try
+                        {
+                            machineName = Dns.GetHostByAddress(host).HostName;
+                        }
+                        catch (Exception ex)
+                        {
+                            machineName = "";
+                        }
+                        this.Invoke((MethodInvoker)(() => listBox_users.Items.Add(host + " " + machineName)));
                     }
                 }
             }
@@ -137,7 +144,7 @@ namespace rumba
 
         private void button_connect_Click(object sender, EventArgs e)
         {
-
+            Console.WriteLine(listBox_users.SelectedItem.ToString());
         }
 
         private void button_download_Click(object sender, EventArgs e)
@@ -147,7 +154,7 @@ namespace rumba
 
         private void listBox_users_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Console.WriteLine(listBox_users.SelectedValue);
+            
         }
 
         private void listBox_users_files_SelectedIndexChanged(object sender, EventArgs e)
@@ -161,11 +168,6 @@ namespace rumba
         }
 
         private void Form1_Load_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
         }

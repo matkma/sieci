@@ -36,7 +36,6 @@
             this.listBox_files = new System.Windows.Forms.ListBox();
             this.button_download = new System.Windows.Forms.Button();
             this.button_refresh = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // button_start
@@ -51,7 +50,7 @@
             // 
             // button_files
             // 
-            this.button_files.Location = new System.Drawing.Point(12, 70);
+            this.button_files.Location = new System.Drawing.Point(171, 12);
             this.button_files.Name = "button_files";
             this.button_files.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.button_files.Size = new System.Drawing.Size(104, 23);
@@ -65,9 +64,10 @@
             this.listBox_users.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.listBox_users.FormattingEnabled = true;
-            this.listBox_users.Location = new System.Drawing.Point(12, 133);
+            this.listBox_users.HorizontalScrollbar = true;
+            this.listBox_users.Location = new System.Drawing.Point(12, 172);
             this.listBox_users.Name = "listBox_users";
-            this.listBox_users.Size = new System.Drawing.Size(104, 147);
+            this.listBox_users.Size = new System.Drawing.Size(153, 134);
             this.listBox_users.TabIndex = 3;
             this.listBox_users.SelectedIndexChanged += new System.EventHandler(this.listBox_users_SelectedIndexChanged);
             // 
@@ -77,15 +77,16 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listBox_users_files.FormattingEnabled = true;
-            this.listBox_users_files.Location = new System.Drawing.Point(122, 133);
+            this.listBox_users_files.HorizontalScrollbar = true;
+            this.listBox_users_files.Location = new System.Drawing.Point(171, 172);
             this.listBox_users_files.Name = "listBox_users_files";
-            this.listBox_users_files.Size = new System.Drawing.Size(348, 147);
+            this.listBox_users_files.Size = new System.Drawing.Size(386, 134);
             this.listBox_users_files.TabIndex = 4;
             this.listBox_users_files.SelectedIndexChanged += new System.EventHandler(this.listBox_users_files_SelectedIndexChanged);
             // 
             // button_connect
             // 
-            this.button_connect.Location = new System.Drawing.Point(12, 104);
+            this.button_connect.Location = new System.Drawing.Point(12, 143);
             this.button_connect.Name = "button_connect";
             this.button_connect.Size = new System.Drawing.Size(75, 23);
             this.button_connect.TabIndex = 5;
@@ -98,15 +99,16 @@
             this.listBox_files.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listBox_files.FormattingEnabled = true;
-            this.listBox_files.Location = new System.Drawing.Point(122, 12);
+            this.listBox_files.HorizontalScrollbar = true;
+            this.listBox_files.Location = new System.Drawing.Point(171, 41);
             this.listBox_files.Name = "listBox_files";
-            this.listBox_files.Size = new System.Drawing.Size(348, 82);
+            this.listBox_files.Size = new System.Drawing.Size(386, 95);
             this.listBox_files.TabIndex = 6;
             this.listBox_files.SelectedIndexChanged += new System.EventHandler(this.listBox_files_SelectedIndexChanged);
             // 
             // button_download
             // 
-            this.button_download.Location = new System.Drawing.Point(122, 104);
+            this.button_download.Location = new System.Drawing.Point(171, 143);
             this.button_download.Name = "button_download";
             this.button_download.Size = new System.Drawing.Size(75, 23);
             this.button_download.TabIndex = 7;
@@ -124,27 +126,10 @@
             this.button_refresh.UseVisualStyleBackColor = true;
             this.button_refresh.Click += new System.EventHandler(this.button_refresh_Click);
             // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(214, 106);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 9;
-            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(214, 106);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 9;
-            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
-            // 
             // Form1
             // 
             this.BackColor = System.Drawing.Color.Thistle;
-            this.ClientSize = new System.Drawing.Size(482, 290);
-            this.Controls.Add(this.textBox1);
+            this.ClientSize = new System.Drawing.Size(569, 329);
             this.Controls.Add(this.button_refresh);
             this.Controls.Add(this.button_download);
             this.Controls.Add(this.listBox_files);
@@ -157,7 +142,6 @@
             this.Text = "Rumba";
             this.Load += new System.EventHandler(this.Form1_Load_1);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -171,7 +155,6 @@
         private System.Windows.Forms.ListBox listBox_files;
         private System.Windows.Forms.Button button_download;
         private System.Windows.Forms.Button button_refresh;
-        private System.Windows.Forms.TextBox textBox1;
 
     }
 }
