@@ -46,6 +46,7 @@ namespace rumba
             {
                 while (!done)
                 {
+                    Console.WriteLine("dupa");
                     byte[] bytes = listener.Receive(ref groupEP);
                     Console.WriteLine("Connected to the client {0}, {1}", groupEP, Encoding.ASCII.GetString(bytes));
                 }
