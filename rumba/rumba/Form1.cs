@@ -21,6 +21,9 @@ namespace rumba
         private static int port = 8050;
 
         private static string msg_check = "check";
+        private static string msg_check_back = "check_back";
+
+        private static UdpClient listener = null;
 
         public Form1()
         {
@@ -39,7 +42,7 @@ namespace rumba
         {
             bool done = false;
 
-            UdpClient listener = new UdpClient(port);
+            listener = new UdpClient(port);
             IPEndPoint groupEP = new IPEndPoint(IPAddress.Any, port);
 
             try
@@ -47,7 +50,29 @@ namespace rumba
                 while (!done)
                 {
                     byte[] bytes = listener.Receive(ref groupEP);
-                    Console.WriteLine("Connected to the client {0}, {1}", groupEP, Encoding.ASCII.GetString(bytes));
+                    if (bytes.ToString().Equals(msg_check))
+                    {
+                        SendContent(groupEP.Address.ToString(), msg_check_back);
+                    }
+                    if (bytes.ToString().Equals(msg_check_back))
+                    {
+                        string machineName = null;
+                        string host = groupEP.Address.ToString();
+
+                        try
+                        {
+                            machineName = Dns.GetHostByAddress(host).HostName;
+                        }
+                        catch (Exception ex)
+                        {
+                            machineName = "";
+                        }
+                        this.Invoke((MethodInvoker)(() => listBox_users.Items.Add(host + " " + machineName)));
+                        //Console.WriteLine("Connected to the client {0}, {1}", groupEP, Encoding.ASCII.GetString(bytes));
+                        
+                        //SendContent(host, msg_check);
+                        //this.Invoke((MethodInvoker)(() => listBox_users.Items.Add(host + " " + machineName)));
+                    }
                 }
             }
             catch (Exception e)
@@ -68,7 +93,7 @@ namespace rumba
             {
                 string host = subnet + "." + i;
                 Ping ping = new Ping();
-                PingReply reply = ping.Send(IPAddress.Parse(host), 200);
+                PingReply reply = ping.Send(IPAddress.Parse(host), 20);
 
                 if (reply.Status == IPStatus.Success)
                 {
@@ -80,15 +105,7 @@ namespace rumba
                     }
                     else
                     {
-                        try
-                        {
-                            machineName = Dns.GetHostByAddress(host).HostName;
-                        }
-                        catch (Exception ex)
-                        {
-                            machineName = "";
-                        }
-                        this.Invoke((MethodInvoker)(() => listBox_users.Items.Add(host + " " + machineName)));
+                        SendContent(host, msg_check);
                     }
                 }
             }
@@ -100,6 +117,7 @@ namespace rumba
             IPEndPoint groupEP = new IPEndPoint(IPAddress.Parse(ip), port);
             byte[] sendBytes = Encoding.ASCII.GetBytes(message);
             udp.Send(sendBytes, sendBytes.Length, groupEP);
+            udp.Close();
         }
 
         #region EventHandlers
@@ -114,13 +132,17 @@ namespace rumba
             if (button_start.Text == "Start")
             {
                 button_start.Text = "Stop";
-
                 Task.Factory.StartNew(() => HandleIncome(port));
 
             }
             else
             {
                 button_start.Text = "Start";
+
+                if (listener != null)
+                {
+                    listener.Close();
+                }
             }
         }
 
@@ -143,7 +165,6 @@ namespace rumba
         private void button_connect_Click(object sender, EventArgs e)
         {
             //Console.WriteLine(listBox_users.SelectedItem.ToString());
-            SendContent(localIp, "kochu");
         }
 
         private void button_download_Click(object sender, EventArgs e)
