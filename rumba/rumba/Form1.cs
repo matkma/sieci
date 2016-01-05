@@ -16,12 +16,20 @@ namespace rumba
 {
     public partial class Form1 : Form
     {
+        #region Variables & constructor
+
         private static string path = null;
         private static string localIp = null;
+        private static string connectedIp = null;
         private static int port = 8050;
 
         private static string msg_check = "check";
         private static string msg_check_back = "check_back";
+        private static string msg_file_leader = "@F@";
+        private static string msg_file_request_leader = "@R@";
+        private static string msg_list_leader = "@L@";
+        private static string msg_list_start = "start_listing";
+        private static string msg_list_continue = "cont_listing";
 
         private static UdpClient listener = null;
 
@@ -38,6 +46,15 @@ namespace rumba
             }
         }
 
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        #endregion
+
+        #region Network
+
         public void HandleIncome(int port)
         {
             bool done = false;
@@ -47,14 +64,18 @@ namespace rumba
 
             try
             {
+                int i = 0;
+
                 while (!done)
                 {
                     byte[] bytes = listener.Receive(ref groupEP);
-                    if (System.Text.Encoding.UTF8.GetString(bytes).Equals(msg_check))
+                    string msg_received = System.Text.Encoding.UTF8.GetString(bytes);
+
+                    if (msg_received.Equals(msg_check))
                     {
                         SendContent(groupEP.Address.ToString(), msg_check_back);
                     }
-                    if (System.Text.Encoding.UTF8.GetString(bytes).Equals(msg_check_back))
+                    else if (msg_received.Equals(msg_check_back))
                     {
                         string machineName = null;
                         string host = groupEP.Address.ToString();
@@ -68,10 +89,41 @@ namespace rumba
                             machineName = "";
                         }
                         this.Invoke((MethodInvoker)(() => listBox_users.Items.Add(host + " " + machineName)));
-                        //Console.WriteLine("Connected to the client {0}, {1}", groupEP, Encoding.ASCII.GetString(bytes));
+                    }
+                    else if (msg_received.StartsWith(msg_list_leader))
+                    {
+                        string message = msg_received.Substring(msg_list_leader.Length);
+
+                        if (!listBox_users_files.Items.Contains(message))
+                        {
+                            this.Invoke((MethodInvoker)(() => listBox_users_files.Items.Add(msg_received.Substring(msg_list_leader.Length))));
+                        }
+
+                        SendContent(groupEP.Address.ToString(), msg_list_continue);
+                    }
+                    else if (msg_received.Equals(msg_list_start) || msg_received.Equals(msg_list_continue))
+                    {
+                        if (msg_received.Equals(msg_list_start))
+                        {
+                            i = 0;
+                            if (listBox_files.Items.Count > 0)
+                            {
+                                SendContent(groupEP.Address.ToString(), msg_list_leader + listBox_files.Items[i]);
+                            }
+                        }
+                        else
+                        {
+                            if (i < listBox_files.Items.Count)
+                            {
+                                SendContent(groupEP.Address.ToString(), msg_list_leader + listBox_files.Items[i]);
+                            }
+                        }
+
+                        i++;
+                    }
+                    else if (msg_received.StartsWith(msg_file_request_leader))
+                    {
                         
-                        //SendContent(host, msg_check);
-                        //this.Invoke((MethodInvoker)(() => listBox_users.Items.Add(host + " " + machineName)));
                     }
                 }
             }
@@ -120,12 +172,19 @@ namespace rumba
             udp.Close();
         }
 
-        #region EventHandlers
-
-        private void Form1_Load(object sender, EventArgs e)
+        public void SendFile(string ip, string path)
         {
-
+            IPEndPoint groupEP = new IPEndPoint(IPAddress.Parse(ip), port);
+            Socket client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            client.Connect(groupEP);
+            client.SendFile(path);
+            client.Shutdown(SocketShutdown.Both);
+            client.Close();
         }
+
+        #endregion
+
+        #region EventHandlers
 
         private void button_start_Click(object sender, EventArgs e)
         {
@@ -164,17 +223,42 @@ namespace rumba
 
         private void button_connect_Click(object sender, EventArgs e)
         {
-            //Console.WriteLine(listBox_users.SelectedItem.ToString());
+            if (listBox_users.SelectedIndex != -1)
+            {
+                string ip = listBox_users.SelectedItem.ToString();
+
+                if (ip != null)
+                {
+                    int endPoint = ip.IndexOf(" ");
+                    ip = ip.Substring(0, endPoint).Trim();
+                    connectedIp = ip;
+
+                    SendContent(ip, msg_list_start);
+                }
+            }
         }
 
         private void button_download_Click(object sender, EventArgs e)
         {
-            
+            if (listBox_users_files.SelectedIndex != -1)
+            {
+                string path = listBox_users_files.SelectedItem.ToString();
+                
+                if (path != null && connectedIp != null)
+                {
+                    SendContent(connectedIp, msg_file_request_leader + path);
+                }
+            }
         }
 
         private void listBox_users_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
+            if (listBox_users_files.Items.Count > 0)
+            {
+                listBox_users_files.Items.Clear();
+            }
+
+            connectedIp = null;
         }
 
         private void listBox_users_files_SelectedIndexChanged(object sender, EventArgs e)
