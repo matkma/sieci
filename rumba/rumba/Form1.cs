@@ -49,13 +49,12 @@ namespace rumba
             {
                 while (!done)
                 {
-                    Console.WriteLine("dupa");
                     byte[] bytes = listener.Receive(ref groupEP);
-                    if (bytes.ToString().Equals(msg_check))
+                    if (System.Text.Encoding.UTF8.GetString(bytes).Equals(msg_check))
                     {
                         SendContent(groupEP.Address.ToString(), msg_check_back);
                     }
-                    if (bytes.ToString().Equals(msg_check_back))
+                    if (System.Text.Encoding.UTF8.GetString(bytes).Equals(msg_check_back))
                     {
                         string machineName = null;
                         string host = groupEP.Address.ToString();
