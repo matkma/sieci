@@ -36,6 +36,7 @@
             this.listBox_files = new System.Windows.Forms.ListBox();
             this.button_download = new System.Windows.Forms.Button();
             this.button_refresh = new System.Windows.Forms.Button();
+            this.button_clear_listBox_files = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button_start
@@ -126,10 +127,21 @@
             this.button_refresh.UseVisualStyleBackColor = true;
             this.button_refresh.Click += new System.EventHandler(this.button_refresh_Click);
             // 
+            // button_clear_listBox_files
+            // 
+            this.button_clear_listBox_files.Location = new System.Drawing.Point(281, 12);
+            this.button_clear_listBox_files.Name = "button_clear_listBox_files";
+            this.button_clear_listBox_files.Size = new System.Drawing.Size(75, 23);
+            this.button_clear_listBox_files.TabIndex = 9;
+            this.button_clear_listBox_files.Text = "Wyczyść";
+            this.button_clear_listBox_files.UseVisualStyleBackColor = true;
+            this.button_clear_listBox_files.Click += new System.EventHandler(this.button_clear_listBox_files_Click);
+            // 
             // Form1
             // 
             this.BackColor = System.Drawing.Color.Thistle;
             this.ClientSize = new System.Drawing.Size(569, 329);
+            this.Controls.Add(this.button_clear_listBox_files);
             this.Controls.Add(this.button_refresh);
             this.Controls.Add(this.button_download);
             this.Controls.Add(this.listBox_files);
@@ -155,6 +167,7 @@
         private System.Windows.Forms.ListBox listBox_files;
         private System.Windows.Forms.Button button_download;
         private System.Windows.Forms.Button button_refresh;
+        private System.Windows.Forms.Button button_clear_listBox_files;
 
     }
 }

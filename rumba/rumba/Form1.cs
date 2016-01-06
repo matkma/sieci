@@ -33,6 +33,9 @@ namespace rumba
 
         private static UdpClient listener = null;
 
+        public static string data = null;
+
+
         public Form1()
         {
             InitializeComponent();
@@ -123,7 +126,8 @@ namespace rumba
                     }
                     else if (msg_received.StartsWith(msg_file_request_leader))
                     {
-                        
+                        string message = msg_received.Substring(msg_file_request_leader.Length);
+                        SendFile(groupEP.Address.ToString(), message);
                     }
                 }
             }
@@ -176,10 +180,104 @@ namespace rumba
         {
             IPEndPoint groupEP = new IPEndPoint(IPAddress.Parse(ip), port);
             Socket client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
+            try
+            {
+                client.Connect(groupEP);
+                string fileName = "D:\\test.txt";
+
+                // Send file fileName to remote device
+                Console.WriteLine("Sending {0} to the host.", fileName);
+
+                //byte[] msg = Encoding.ASCII.GetBytes("This is a test<EOF>");
+
+                //client.Send(msg);
+                client.SendFile(fileName);
+
+                client.Shutdown(SocketShutdown.Send);
+                client.Close();
+            }
+            catch (ArgumentNullException ane)
+            {
+                Console.WriteLine("ArgumentNullException : {0}", ane.ToString());
+            }
+            catch (SocketException se)
+            {
+                Console.WriteLine("SocketException : {0}", se.ToString());
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Unexpected exception : {0}", e.ToString());
+            }
+
+            /*IPEndPoint groupEP = new IPEndPoint(IPAddress.Parse(ip), port);
+            TcpClient client = new TcpClient(AddressFamily.InterNetwork);
+            //Socket client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             client.Connect(groupEP);
-            client.SendFile(path);
-            client.Shutdown(SocketShutdown.Both);
-            client.Close();
+            if (client.Connected)
+            {
+                Console.WriteLine("Połączono, wysyłam...");
+                client.Client.SendFile(path);
+            }
+            //client.Client.Shutdown(SocketShutdown.Both);
+            client.Close();*/
+        }
+
+        public void ReceiveFile(string ip)
+        {
+            byte[] bytes = new Byte[1024];
+            IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Parse(ip), port);
+            Socket listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            
+            try
+            {
+                listener.Bind(localEndPoint);
+                listener.Listen(10);
+
+                Console.WriteLine("Waiting for a connection...");
+                Socket handler = listener.Accept();
+                data = null;
+
+                while (true)
+                {
+                    using (var output = File.Create("D://plik.dat"))
+                    {
+                        Console.WriteLine("Client connected. Starting to receive the file");
+
+                        // read the file in chunks of 1KB
+                        var buffer = new byte[1024];
+                        int bytesRead;
+                        while ((bytesRead = listener.Receive(buffer)) > 0)
+                        {
+                            output.Write(buffer, 0, bytesRead);
+                        }
+                    }
+
+                    //http://stackoverflow.com/questions/10182751/server-client-send-receive-simple-text
+
+                    //bytes = new byte[1024];
+                    
+                    //int bytesRec = handler.Receive(bytes);
+                    //data += Encoding.ASCII.GetString(bytes, 0, bytesRec);
+                    //if (data.IndexOf("<EOF>") > -1)
+                    //{
+                    //     break;
+                    //}
+                }
+
+                Console.WriteLine("Text received : {0}", data);
+
+                //byte[] msg = Encoding.ASCII.GetBytes(data);
+                //handler.Send(msg);
+                handler.Shutdown(SocketShutdown.Both);
+                handler.Close();
+
+                listener.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
         }
 
         #endregion
@@ -247,6 +345,7 @@ namespace rumba
                 if (path != null && connectedIp != null)
                 {
                     SendContent(connectedIp, msg_file_request_leader + path);
+                    Task.Factory.StartNew(() => ReceiveFile(connectedIp));
                 }
             }
         }
@@ -283,6 +382,12 @@ namespace rumba
             var task = Task.Factory.StartNew(() => RefreshHosts(subnet, ref listBox_users));
         }
 
+        private void button_clear_listBox_files_Click(object sender, EventArgs e)
+        {
+            listBox_files.Items.Clear();
+        }
+
         #endregion
+
     }
 }
