@@ -11,6 +11,7 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Net.NetworkInformation;
+using System.Threading;
 
 namespace rumba
 {
@@ -32,8 +33,10 @@ namespace rumba
         private static string msg_list_continue = "cont_listing";
 
         private static UdpClient listener = null;
+        private static TcpListener receiver = null;
 
         public static string data = null;
+        public static string fileName = null;
 
 
         public Form1()
@@ -178,6 +181,28 @@ namespace rumba
 
         public void SendFile(string ip, string path)
         {
+            TcpClient client = new TcpClient(ip, port);
+
+            Console.WriteLine("sendfile: connected");
+
+            var netStream = client.GetStream();
+            Console.WriteLine("sendfile: stream");
+
+            var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read);
+            byte[] data = new byte[fileStream.Length];
+
+            fileStream.CopyTo(netStream, data.Length);
+            Console.WriteLine("sendfile: wrote to stream");
+            fileStream.Flush();
+            fileStream.Close();
+
+            netStream.Flush();
+            netStream.Close();
+
+            Console.WriteLine("sendfile: streams closed");
+
+            client.Close();
+            /*
             IPEndPoint groupEP = new IPEndPoint(IPAddress.Parse(ip), port);
             Socket client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
@@ -223,12 +248,59 @@ namespace rumba
             client.Close();*/
         }
 
-        public void ReceiveFile(string ip)
+        public void ReceiveFile(string path)
         {
+            receiver = new TcpListener(port);
+            IPEndPoint groutEP = new IPEndPoint(IPAddress.Any, port);
+
+            bool done = false;
+
+            Console.WriteLine("receivefile: starting");
+            receiver.Start();
+
+            Console.WriteLine("receivefile: started");
+
+            while (!done)
+            {
+                var client = receiver.AcceptTcpClient();
+
+                Console.WriteLine("receivefile: client accepted");
+
+              //  var socketThread = new Thread(() =>
+              //  {
+                    Console.WriteLine("receivefile: thread started");
+                    var data = new byte[1024];
+                    var stream = client.GetStream();
+                    Console.WriteLine("receivefile: ");
+                    var output = File.Create("result.dat");
+                    //int bytesRead = (int)stream.Length;
+                    var fs = new FileStream(path + fileName, FileMode.OpenOrCreate, FileAccess.Write);
+
+                    stream.CopyTo(fs);
+                    
+                    //while ((bytesRead = stream.Read(data, 0, data.Length)) > 0)
+                   // {
+                   //     Console.WriteLine("receivefile: loop going");
+                   //     output.Write(data, 0, bytesRead);
+                   // }
+
+                    Console.WriteLine("receivefile: closing stream");
+                    stream.Flush();
+                    stream.Close();
+
+                    fs.Flush();
+                    fs.Close();
+
+                    fileName = null;
+                    client.Close();
+             //   });
+            }
+
+
+            /*
             byte[] bytes = new Byte[1024];
             IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Parse(ip), port);
             Socket listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            
             try
             {
                 listener.Bind(localEndPoint);
@@ -278,6 +350,8 @@ namespace rumba
             {
                 Console.WriteLine(e.ToString());
             }
+             * */
+
         }
 
         #endregion
@@ -289,7 +363,9 @@ namespace rumba
             if (button_start.Text == "Start")
             {
                 button_start.Text = "Stop";
+                path = "D:\\";
                 Task.Factory.StartNew(() => HandleIncome(port));
+                Task.Factory.StartNew(() => ReceiveFile(path));
 
             }
             else
@@ -345,7 +421,8 @@ namespace rumba
                 if (path != null && connectedIp != null)
                 {
                     SendContent(connectedIp, msg_file_request_leader + path);
-                    Task.Factory.StartNew(() => ReceiveFile(connectedIp));
+                    fileName = path.Substring(path.LastIndexOf("\\") + 1);
+                    //Task.Factory.StartNew(() => ReceiveFile(connectedIp));
                 }
             }
         }
