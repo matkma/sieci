@@ -69,13 +69,6 @@ namespace rumba
                 while (!done)
                 {
                     byte[] bytes = listener.Receive(ref groupEP);
-<<<<<<< HEAD
-                    if (System.Text.Encoding.UTF8.GetString(bytes).Equals(msg_check))
-                    {
-                        SendContent(groupEP.Address.ToString(), msg_check_back);
-                    }
-                    if (System.Text.Encoding.UTF8.GetString(bytes).Equals(msg_check_back))
-=======
                     string msg_received = System.Text.Encoding.UTF8.GetString(bytes);
 
                     if (msg_received.Equals(msg_check))
@@ -83,7 +76,6 @@ namespace rumba
                         SendContent(groupEP.Address.ToString(), msg_check_back);
                     }
                     else if (msg_received.Equals(msg_check_back))
->>>>>>> 62a153c86392066ec93234c0846692a5dc45d0e6
                     {
                         string machineName = null;
                         string host = groupEP.Address.ToString();
